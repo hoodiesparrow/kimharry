@@ -1,6 +1,9 @@
+process.env.TZ = 'Asia/Seoul'
+
 require('dotenv').config()
-const { TOKEN } = process.env
+const { TOKEN, DBTOKEN } = process.env
 const { Client, Collection, GatewayIntentBits } = require('discord.js')
+const { connect } = require('mongoose')
 const fs = require('fs')
 
 const client = new Client({ intents: GatewayIntentBits.Guilds })
@@ -16,6 +19,12 @@ for (const folder of functionFolders) {
   }
 }
 
-client.handleEvents()
-client.handleCommands()
-client.login(TOKEN)
+client.handleEvents();
+client.handleCommands();
+client.login(TOKEN);
+
+(async () => {
+  await connect(DBTOKEN).catch(console.error);
+})();
+
+// console.log(new Date().toISOString())
